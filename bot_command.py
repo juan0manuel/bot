@@ -22,4 +22,12 @@ async def password(ctx,a:str,b:int):
     cr = ab.gen_pass(b)
     await ctx.send(f"Su contraseña es: {cr}{nombre}")
 
+@bot.command(name = "HELP")
+async def helpme(ctx):
+    help_text = "**Comandos disponibles:**\n"
+    for command in bot.commands:
+        help_text += f"- `%{command.name}`\n"
+    
+    await ctx.send(help_text)
+
 bot.run(token)
