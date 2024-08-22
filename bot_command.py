@@ -1,12 +1,20 @@
 import discord
 from discord.ext import commands
 import algoritbot as ab
+import os,random
+import requests
+
+def get_duck_image_url():    
+    url = 'https://random-d.uk/api/random'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
 
 intents = discord.Intents.default()
 intents.message_content = True
-token = ""
+token = "your token plis "
 
-bot = commands.Bot(command_prefix = "%" , intents = intents)
+bot = commands.Bot(command_prefix = "%" , intents = intents, help_command = None)
 
 @bot.event
 async def on_ready():
@@ -30,4 +38,30 @@ async def helpme(ctx):
     
     await ctx.send(help_text)
 
+@bot.command(name = "momasos")
+async def mem(ctx,a):
+    if a == "memes":
+        j = random.choice(os.listdir("memes"))
+        with open(f"memes/{j}","rb") as f:
+            picture = discord.File(f)
+        await ctx.send(file = picture)
+    elif a == "chamba":
+        i = random.choice(os.listdir("chamba"))
+        with open(f"chamba/{i}","rb") as f:
+            picture = discord.File(f)
+        await ctx.send(file = picture)
+
+@bot.command(name = "momasos_porcentaje")
+async def mem(ctx):
+    archivos_memes = os.listdir("memes")
+    probabilitis=[0.1,0.3,0.6]
+    a = random.choices(archivos_memes, weights=probabilitis)[0]
+    with open(f"memes/{a}","rb") as f:
+        picture = discord.File(f)
+    await ctx.send(file = picture)
+
+@bot.command(name = "pato")
+async def duck(ctx):
+    image = get_duck_image_url()
+    await ctx.send(image)
 bot.run(token)
